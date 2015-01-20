@@ -10,21 +10,31 @@ namespace WLB
 
 		private void OnTriggerEnter2D(Collider2D other)
 		{
+			Debug.Log ("wtf");
 			List<GameObject> gos = ledgeGrabMotor.gosInSpaceCheck;
 
-			foreach(GameObject go in gos)
+			if (gos.Count == 0)
 			{
-				if(go == other.gameObject)
+				gos.Add(other.gameObject);
+				ledgeGrabMotor.gosInSpaceCheck = gos;
+			} 
+			else 
+			{
+				foreach(GameObject go in gos)
 				{
-					return;
-				}
-				else
-				{
-					gos.Add(go);
-					ledgeGrabMotor.gosInSpaceCheck = gos;
+					if(go == other.gameObject)
+					{
+						break;
+					}
+					else
+					{
+						gos.Add(go);
+						ledgeGrabMotor.gosInSpaceCheck = gos;
+					}
 				}
 			}
-	
+
+			Debug.Log (gos.Count);
 			ledgeGrabMotor.spaceEmpty = gos.Count == 0;
 		}
 

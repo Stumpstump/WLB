@@ -33,16 +33,25 @@ namespace WLB
 		private IEnumerator Climb()
 		{
 			isClimbing = true;
+			Rigidbody2D rb2d = playerPos.gameObject.GetComponent<Rigidbody2D> ();
+			//rb2d.isKinematic = false;
 
 			Vector2 endPos = climbPos.position;
 			Vector2 currentPos = playerPos.position;
 			Debug.Log ("climbing");
-			while(currentPos != endPos)
-			{
-				yield return null;
-				Vector2.Lerp(currentPos, endPos, climbTime * Time.fixedDeltaTime);
-			}
 
+			float elapsedTime = 0f;
+
+			while(elapsedTime < climbTime)
+			{
+				playerPos.position = Vector2.Lerp(currentPos, endPos, (elapsedTime / climbTime));
+				elapsedTime += Time.deltaTime;
+				Debug.Log(playerPos.position);
+				yield return null;
+			}
+			playerPos.position = endPos;
+
+			//rb2d.isKinematic = true;
 			isClimbing = false;
 		}
 	}
